@@ -16,5 +16,7 @@ public interface PurchaseOrderDetailsService {
 	public String deleteOrderById(Integer id);
 	
 	public PurchaseOrderDetailsEntity updateOrderDetails(PurchaseOrderDetailsEntity orderEntities);
+	
+	 public List<PurchaseOrderDetailsEntity> findAllByCompanyIdAndUserId(Long companyId, Long userId);
 
 }

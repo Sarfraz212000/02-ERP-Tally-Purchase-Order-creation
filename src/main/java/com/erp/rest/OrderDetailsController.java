@@ -61,7 +61,8 @@ public class OrderDetailsController {
 	}
 
 	@PutMapping("/updateorder")
-	public ResponseEntity<PurchaseOrderDetailsEntity> updateOrderDetails(@RequestBody PurchaseOrderDetailsEntity entity) {
+	public ResponseEntity<PurchaseOrderDetailsEntity> updateOrderDetails(
+			@RequestBody PurchaseOrderDetailsEntity entity) {
 		PurchaseOrderDetailsEntity updateOrderDetails = orderService.updateOrderDetails(entity);
 		if (updateOrderDetails != null) {
 			return new ResponseEntity<>(updateOrderDetails, HttpStatus.OK);
@@ -69,6 +70,16 @@ public class OrderDetailsController {
 			return new ResponseEntity<>(updateOrderDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
+	}
+
+	@GetMapping("orders/{companyId}/{userId}")
+	public ResponseEntity<List<PurchaseOrderDetailsEntity>> findByCompanyIdAndUserId(@PathVariable Long companyId,
+			@PathVariable Long userId) {
+		List<PurchaseOrderDetailsEntity> entities = orderService.findAllByCompanyIdAndUserId(companyId, userId);
+		if (!entities.isEmpty()) {
+			return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(entities, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(entities, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

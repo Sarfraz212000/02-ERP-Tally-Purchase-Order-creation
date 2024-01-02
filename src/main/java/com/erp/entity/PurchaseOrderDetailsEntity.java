@@ -53,6 +53,6 @@ public class PurchaseOrderDetailsEntity {
 	
 	private Long userId;
 	
-	private Long compid;
+	private Long companyId;
 	
 }

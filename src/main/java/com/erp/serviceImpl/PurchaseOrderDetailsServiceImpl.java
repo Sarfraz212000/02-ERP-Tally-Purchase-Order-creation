@@ -64,4 +64,9 @@ public class PurchaseOrderDetailsServiceImpl implements PurchaseOrderDetailsServ
 		return save;
 	}
 
+	@Override
+	public List<PurchaseOrderDetailsEntity> findAllByCompanyIdAndUserId(Long companyId, Long userId) {
+		return purchaseOrderRepo.findAllByCompanyIdAndUserId(companyId, userId);
+	}
+
 }
