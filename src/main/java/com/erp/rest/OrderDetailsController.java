@@ -11,20 +11,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.erp.binding.purchaseOrderResponse;
 import com.erp.entity.PurchaseOrderDetailsEntity;
 import com.erp.service.PurchaseOrderDetailsService;
 
+import jakarta.validation.Valid;
+
 @RestController
+@RequestMapping("/erptally")
 public class OrderDetailsController {
 
 	@Autowired
 	private PurchaseOrderDetailsService orderService;
 
 	@PostMapping("/saveorder")
-	public ResponseEntity<String> saveOrder(@RequestBody PurchaseOrderDetailsEntity entity) {
+	public ResponseEntity<String> saveOrder(@Valid @RequestBody PurchaseOrderDetailsEntity entity) {
 		Boolean saveOrder = orderService.saveOrder(entity);
 		if (saveOrder) {
 			return new ResponseEntity<String>("purchase order save", HttpStatus.CREATED);
