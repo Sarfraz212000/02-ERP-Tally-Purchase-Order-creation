@@ -12,7 +12,10 @@ import com.erp.entity.PurchaseOrderDetailsEntity;
 import com.erp.repository.PurchaseOrderDetailsRepo;
 import com.erp.service.PurchaseOrderDetailsService;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class PurchaseOrderDetailsServiceImpl implements PurchaseOrderDetailsService {
 
 	@Autowired
@@ -57,16 +60,38 @@ public class PurchaseOrderDetailsServiceImpl implements PurchaseOrderDetailsServ
 	}
 
 	@Override
-	public PurchaseOrderDetailsEntity updateOrderDetails(PurchaseOrderDetailsEntity orderEntities) {
-		PurchaseOrderDetailsEntity entity = purchaseOrderRepo.findById(orderEntities.getPurchaseOrderId()).get();
-		BeanUtils.copyProperties(orderEntities, entity);
-		PurchaseOrderDetailsEntity save = purchaseOrderRepo.save(entity);
-		return save;
+	public PurchaseOrderDetailsEntity updateOrderDetails(PurchaseOrderDetailsEntity orderEntities, Integer purchaseOrderId) {
+		Optional<PurchaseOrderDetailsEntity> optionalOrder = purchaseOrderRepo.findById(purchaseOrderId);
+		if (optionalOrder.isPresent()) {
+			PurchaseOrderDetailsEntity entity = optionalOrder.get();
+			BeanUtils.copyProperties(orderEntities, entity);
+			entity.setPurchaseOrderId(purchaseOrderId);
+			return purchaseOrderRepo.save(entity);
+		}
+		return null;
 	}
 
 	@Override
 	public List<PurchaseOrderDetailsEntity> findAllByCompanyIdAndUserId(Long companyId, Long userId) {
 		return purchaseOrderRepo.findAllByCompanyIdAndUserId(companyId, userId);
+	}
+
+	@Override
+	public List<PurchaseOrderDetailsEntity> getAllPurchaseOrder() {
+		return purchaseOrderRepo.findAll();
+		 
+	}
+
+	@Override
+	public List<PurchaseOrderDetailsEntity> findByCompanyId(Long companyId) {
+		 return  purchaseOrderRepo.findAllByCompanyId(companyId);
+	   
+	}
+
+	@Override
+	public List<PurchaseOrderDetailsEntity> findByUserId(Long userId) {
+		return	purchaseOrderRepo.findAllByUserId(userId);
+		
 	}
 
 }

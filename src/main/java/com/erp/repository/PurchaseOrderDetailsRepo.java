@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.erp.entity.PurchaseOrderDetailsEntity;
 
 public interface PurchaseOrderDetailsRepo extends JpaRepository<PurchaseOrderDetailsEntity, Integer> {
-	
-	 List<PurchaseOrderDetailsEntity> findAllByCompanyIdAndUserId(Long companyId, Long userId);
+
+	List<PurchaseOrderDetailsEntity> findAllByCompanyIdAndUserId(Long companyId, Long userId);
+
+	List<PurchaseOrderDetailsEntity> findAllByCompanyId(Long companyId);
+
+	List<PurchaseOrderDetailsEntity> findAllByUserId(Long userId);
 
 }

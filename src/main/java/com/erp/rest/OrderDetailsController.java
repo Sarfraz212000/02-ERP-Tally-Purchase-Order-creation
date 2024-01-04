@@ -45,7 +45,7 @@ public class OrderDetailsController {
 
 	}
 
-	@GetMapping("order/{id}")
+	@GetMapping("/order/{id}")
 	public ResponseEntity<purchaseOrderResponse> getByIdPurchaseOrder(@PathVariable Integer id) {
 		purchaseOrderResponse entity = orderService.getById(id);
 
@@ -58,20 +58,26 @@ public class OrderDetailsController {
 
 	}
 
-	@DeleteMapping("delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteOrderById(@PathVariable Integer id) {
 		String deleteOrder = orderService.deleteOrderById(id);
 		return new ResponseEntity<>(deleteOrder, HttpStatus.OK);
 	}
 
-	@PutMapping("/updateorder")
-	public ResponseEntity<PurchaseOrderDetailsEntity> updateOrderDetails(
+	@PutMapping("/updateorder/{purchaseOrderId}")
+	public ResponseEntity<PurchaseOrderDetailsEntity> updateOrderDetails(@PathVariable Integer purchaseOrderId,
 			@RequestBody PurchaseOrderDetailsEntity entity) {
-		PurchaseOrderDetailsEntity updateOrderDetails = orderService.updateOrderDetails(entity);
-		if (updateOrderDetails != null) {
-			return new ResponseEntity<>(updateOrderDetails, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(updateOrderDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+		try {
+			PurchaseOrderDetailsEntity updateOrderDetails = orderService.updateOrderDetails(entity, purchaseOrderId);
+
+			if (updateOrderDetails != null) {
+				return new ResponseEntity<>(updateOrderDetails, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 	}
@@ -84,6 +90,28 @@ public class OrderDetailsController {
 			return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(entities, HttpStatus.OK);
 		}
 		return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(entities, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@GetMapping("/getAllorders")
+	public ResponseEntity<List<PurchaseOrderDetailsEntity>> getAllPurchase() {
+		List<PurchaseOrderDetailsEntity> allPurchaseOrder = orderService.getAllPurchaseOrder();
+
+		return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(allPurchaseOrder, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getcompany/{companyId}")
+	public ResponseEntity<List<PurchaseOrderDetailsEntity>> getByCompanyId(@PathVariable Long companyId) {
+		 List<PurchaseOrderDetailsEntity> entity = orderService.findByCompanyId(companyId);
+		return new ResponseEntity<List<PurchaseOrderDetailsEntity>>(entity, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/getuser/{userId}")
+	public  ResponseEntity<List<PurchaseOrderDetailsEntity>> getByUserId(@PathVariable Long userId) {
+		 List<PurchaseOrderDetailsEntity> entity = orderService.findByUserId(userId);
+		return new  ResponseEntity<List<PurchaseOrderDetailsEntity>>(entity, HttpStatus.OK);
+
 	}
 
 }
